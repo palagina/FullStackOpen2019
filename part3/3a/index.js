@@ -54,11 +54,11 @@ app.get("/api/names/:id", (request, response) => {
 
 const checkExisting = (newName) => {
   const match = names.find (person => person.name === newName)
-  /* if (match) {
+   if (match) {
     return true
-  } else { */
+  } else { 
     return false
-/*   } */
+   } 
 }
 
 app.post("/api/names", (request, response) => {
