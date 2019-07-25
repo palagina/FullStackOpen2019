@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/api/names";
+const baseUrl = "https://fspart3b-backend.herokuapp.com/api/names";
 
 const getAll = () => {
   const request = axios.get(baseUrl);

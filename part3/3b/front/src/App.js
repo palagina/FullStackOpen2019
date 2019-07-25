@@ -116,6 +116,7 @@ const App = () => {
           }, 5000) 
         })
         .catch(error => {
+          console.log(error)
           setMessage(["error", `Note '${deletedName}' was already deleted`])
           setTimeout(() => {
             setMessage([])
