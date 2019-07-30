@@ -1,39 +1,36 @@
-const mongoose = require('mongoose')
+ const mongoose = require("mongoose");
 
-if ( process.argv.length<3 ) {
-  console.log('give password as argument')
-  process.exit(1)
+ if (process.argv.length < 3) {
+  console.log("give password as argument");
+  process.exit(1);
 }
 
-const password = process.argv[2]
+const password = process.argv[2];
+ const url = `mongodb+srv://fullstack:<password>@cluster0-wafva.mongodb.net/name-app?retryWrites=true&w=majority`;
+mongoose.connect(url, { useNewUrlParser: true });
 
-const url =
-  `mongodb+srv://fullstack:fullstack@cluster0-wafva.mongodb.net/note-app?retryWrites=true&w=majority`
+const nameSchema = new mongoose.Schema({
+  name: String,
+  number: String
+});
 
-mongoose.connect(url, { useNewUrlParser: true })
+const Name = mongoose.model("Name", nameSchema);
 
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
-
-/* const note = new Note({
-  content: 'HTML is Easy',
-  date: new Date(),
-  important: true,
-}) */
-/* note.save().then(response => {
-  console.log('note saved!')
-  mongoose.connection.close()
-}) */
-
-Note.find({}).then(result => {
-    result.forEach(note => {
-      console.log(note)
-    })
-    mongoose.connection.close()
-  })
-
+const name = new Name({
+  name: process.argv[3],
+  number: process.argv[4]
+});
+if (name.name === undefined && password !== undefined) {
+  console.log("Phonebook:");
+  Name.find({}).then(result => {
+    result.forEach(name => {
+      console.log(`${name.name} ${name.number}`);
+    });
+    mongoose.connection.close();
+  });
+} else {
+  name.save().then(response => {
+    console.log(`added ${name.name} number ${name.number} to phonebook`);
+    mongoose.connection.close();
+  });
+}
