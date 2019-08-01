@@ -50,15 +50,6 @@ app.get("/api/names/:id", (request, response, next) => {
     .catch(error => next(error));
 });
 
-/* const checkExisting = newName => {
-  const match = names.find(person => person.name === newName);
-  if (match) {
-    return true;
-  } else {
-    return false;
-  }
-}; */
-
 app.post("/api/names", (request, response, next) => {
   const body = request.body;
   if (body.name === undefined) {
@@ -68,14 +59,11 @@ app.post("/api/names", (request, response, next) => {
     name: body.name,
     number: body.number
   });
-
   name
     .save()
     .then(savedName => savedName.toJSON())
-    .then(savedAndFormattedName => {
-      response.json(savedAndFormattedName);
-    })
-    .catch(error => next(error));
+    .then(savedAndFormattedName => {response.json(savedAndFormattedName)})
+    .catch(error => next(error))
 });
 
 app.delete("/api/names/:id", (request, response, next) => {
@@ -92,9 +80,8 @@ app.put("/api/names/:id", (request, response, next) => {
     name: body.name,
     number: body.number
   };
-  Name.findByIdAndUpdate(request.params.id, name, { new: true })
-    .then(updatedName => {
-      response.json(updatedName.toJSON());
+  Name.findByIdAndUpdate(request.params.id, name, { new: true, runValidators: true, context: 'query' })
+    .then(updatedName => {response.json(updatedName.toJSON())
     })
     .catch(error => next(error));
 });
