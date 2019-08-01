@@ -46,7 +46,6 @@ const App = () => {
 
   //Add a new name
   const addName = (nameObject) => {
-    setPersons(persons.concat(nameObject));
     nameService
       .create(nameObject)
       .then(returnedName => {
@@ -59,7 +58,7 @@ const App = () => {
         setNewNumber("");
       })
       .catch(error => {
-        setMessage(["error", "Something went wrong"])
+        setMessage(["error", error.response.data.error])
         setTimeout(() => {
           setMessage([])
         }, 5000)
@@ -79,11 +78,11 @@ const App = () => {
         }, 5000) 
       })
       .catch(error => {
-        setMessage(["error", `'${personMatch.name}' was already removed from server`])
+        console.log(error.response);
+        setMessage(["error", error.response.data.error])
         setTimeout(() => {
           setMessage([])
         }, 5000)
-        setPersons(persons.filter(person => person.id !== personMatch.id))
       })
     }
   }
