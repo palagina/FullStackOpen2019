@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     required: true,
+    unique: true
   },
   author: {
     type: String,
@@ -13,9 +14,12 @@ const postSchema = new mongoose.Schema({
   },
   url: {
     type: String,
-    required: true,
   },
-  likes: Number
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+  likes: Number,
 })
 
 postSchema.set("toJSON", {
