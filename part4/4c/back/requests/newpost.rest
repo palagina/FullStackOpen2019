@@ -1,9 +1,9 @@
 post http://localhost:3003/api/posts
 Content-Type: application/json 
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjVkNzM1MzNhZDkyYTEzNTZjYzI4OTFiYiIsImlhdCI6MTU2Nzg0NDY0OX0.p1Rz-UoSpwtS7a0yKZYeEzlMonh13_F8tNi0BjJZh1U
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJpZCI6IjVkNzM1MzNhZDkyYTEzNTZjYzI4OTFiYiIsImlhdCI6MTU2Nzg1MDEzNn0.4-G1raDYmOcQIcM1jT5m4bnaYa_ZLiJWk6FE2aUyU48
 
 {
-    "title": "tssss",
+    "title": "tss",
     "author": "author",
     "url": "urlurl"
   }
