@@ -21,7 +21,7 @@ const PostList = ({ searchFilter, deletePost, handleLikes, user }) => {
       <ol style={postListStyle}>{postList()}</ol>
     </div>
   );
-};
+}
 
 const postListStyle = {
     color: "grey",
