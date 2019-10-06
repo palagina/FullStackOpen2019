@@ -1,11 +1,19 @@
 import React from "react";
 import Post from "./Post";
 
-const PostList = ({ searchFilter, deletePost, updatePost, user }) => {
+const PostList = ({ searchFilter, deletePost, handleLikes, user }) => {
   const postList = () =>
-    searchFilter().map((post, id) => (
-      <Post key={id} post={post} deletePost={deletePost} updatePost={updatePost} user={user} />
-    ));
+    searchFilter()
+      .sort((a, b) => b.likes - a.likes)
+      .map((post, id) => (
+        <Post
+          key={id}
+          post={post}
+          deletePost={deletePost}
+          handleLikes={handleLikes}
+          user={user}
+        />
+      ));
 
   return (
     <div>

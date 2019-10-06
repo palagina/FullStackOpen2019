@@ -161,7 +161,7 @@ const App = () => {
   const updatePost = async (postMatch, postObject) => {
     if (
       window.confirm(
-        `${postMatch.title} is already added to phonebook. Do you want to replace it?`
+        `${postMatch.title} already exists. Do you want to replace it?`
       )
     ) {
       try {
@@ -183,6 +183,21 @@ const App = () => {
     }
   };
 
+  const updateLikes = async (postToUpdate, postObject) => {
+      try {
+        const updatedPost = await postService.update(postToUpdate.id, postObject);
+        setPosts(
+          posts.map(post => (post.id !== postToUpdate.id ? post : updatedPost))
+        );
+      } catch (error) {
+        console.log(error.response);
+        setMessage(["error", error.response.data.error]);
+        setTimeout(() => {
+          setMessage([]);
+        }, 5000);
+      }
+  };
+
   //Handle add or update functionality
   const handleData = async event => {
     event.preventDefault();
@@ -196,6 +211,21 @@ const App = () => {
     postMatch === undefined
       ? addPost(postObject)
       : updatePost(postMatch, postObject);
+    setNewPost([]);
+  };
+
+  const handleLikes = async event => {
+    event.preventDefault(); 
+    const postToUpdate = posts.find(post =>
+      post.id === event.target.value
+    );
+     const postObject = {
+       title: postToUpdate.title,
+       author: postToUpdate.author,
+       url: postToUpdate.url,
+       likes: postToUpdate.likes+1
+     };
+    await updateLikes(postToUpdate, postObject);
     setNewPost([]);
   };
 
@@ -230,8 +260,8 @@ const App = () => {
         <PostList
           searchFilter={searchFilter}
           deletePost={deletePost}
-          updatePost={updatePost}
           user={user}
+          handleLikes={handleLikes}
         />
           
     </div>
