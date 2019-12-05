@@ -32,7 +32,7 @@ const AnecdoteList = props => {
 
 const anecdotesToShow = ({ anecdotes, filter }) => {
   if (filter !== undefined) {
-    const filteredAnecdotes = anecdotes.filter(anecdote =>
+    const filteredAnecdotes = anecdotes.filter(anecdote => 
       anecdote.content.toLowerCase().includes(filter.toLowerCase())
     );
     return filteredAnecdotes;
