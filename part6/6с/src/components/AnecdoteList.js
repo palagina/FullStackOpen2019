@@ -1,17 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { vote } from "../reducers/anecdoteReducer";
-import { notification, empty } from "../reducers/notificationReducer";
+import { vote_notification } from "../reducers/notificationReducer";
 import Anecdote from "./Anecdote";
 
 const AnecdoteList = props => {
-  const notification = anecdote => {
-    props.notification(anecdote);
-  };
-  
-  const vote = id => {
-    props.vote(id);
-  };
 
   return (
     <ul>
@@ -20,9 +13,8 @@ const AnecdoteList = props => {
           key={anecdote.id}
           anecdote={anecdote}
           handleClick={() => {
-            vote(anecdote.id);
-            notification(anecdote);
-            setTimeout(() => empty(), 5000);
+            props.vote(anecdote);
+            props.vote_notification(anecdote.content, 20);
           }}
         />
       ))}
@@ -43,8 +35,8 @@ const anecdotesToShow = ({ anecdotes, filter }) => {
 
 const mapDispatchToProps = {
   vote,
-  notification,
-  empty
+  vote_notification,
+  //empty
 };
 
 const mapStateToProps = state => {

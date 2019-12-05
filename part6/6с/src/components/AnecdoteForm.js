@@ -1,18 +1,15 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { addNew } from '../reducers/anecdoteReducer'
-import { newAnec_notify, empty } from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
+import { newAnec_notify} from '../reducers/notificationReducer'
 
 const NewAnecdote = (props) => {
   const addAnecdote = async(event) => {
     event.preventDefault()
-    const anecdote = event.target.anecdote.value
+    const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    const newAnecdote = await anecdoteService.addNew(anecdote)
-    props.addNew(newAnecdote)
-    // props.newAnec_notify(content)
-    // setTimeout(() => props.empty(), 5000);
+    props.addNew(content)
+    props.newAnec_notify(content, 50)
   }
 
   return (
@@ -25,5 +22,5 @@ const NewAnecdote = (props) => {
 
 export default connect(
   null,
-  { addNew, newAnec_notify, empty }
+  { addNew, newAnec_notify }
 )(NewAnecdote)
