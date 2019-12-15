@@ -1,0 +1,1 @@
+Redux done for initial posts, search, likes, notifocations, errors
