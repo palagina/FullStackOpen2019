@@ -15,7 +15,7 @@ let LoginNoHistory = props => {
       const credentials = { username: username.value, password: password.value }
       const user = await loginService.login(credentials)
       window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user))
-      props.history.push("/posts")
+      props.history.push("/")
       props.setUser(user.username)
     } catch (error) {
       props.error(error.response.data.error, 30)

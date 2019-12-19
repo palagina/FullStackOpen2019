@@ -31,6 +31,7 @@ const App = (props) => {
   const LoggedIn = () => {
     return (
       <div>
+        <div>{props.user} logged in</div>
         <Logout />
         <br></br>
         <br></br>
@@ -45,21 +46,19 @@ const App = (props) => {
 
   return (
     <div>
+      <h2>Blog posts</h2>
       <Router>
         <div>
           <div>
             <Link to="/login">Login</Link>
             {props.user===null ? (
-              <div>
-                <Redirect to="/login" />
-              </div>
+              <Redirect to="/login" />
             ) : (
-              <em>{props.user} logged in</em>
+              <Redirect to="/" />
             )}
 
           </div>
-          <Route path="/" render={() => <h2>Blog posts</h2>} />
-          <Route exact path="/posts" render={() => <LoggedIn />} />
+          <Route exact path="/" render={() => <LoggedIn/>} />
           <Route path="/login" render={() =>  <Login />}/>
         </div>
       </Router>
