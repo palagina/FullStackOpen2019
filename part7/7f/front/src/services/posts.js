@@ -1,8 +1,8 @@
 import axios from "axios"
 
 const baseUrl = "http://localhost:3003/api/posts"
-let token = null
 
+let token = null
 const setToken = newToken => {
   token = `bearer ${newToken}`
 }
@@ -47,4 +47,4 @@ const remove = async post => {
   return response.data
 }
 
-export default { getAll, create, updateLikes, updatePost, setToken, remove }
+export default { getAll, create, updateLikes, updatePost, remove, setToken }

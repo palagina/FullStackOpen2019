@@ -74,6 +74,4 @@ export const updateLikes = post => {
   }
 }
 
-
-
 export default postReducer

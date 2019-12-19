@@ -14,7 +14,7 @@ const Post = (props) => {
 
   const giveLike = () => {
     try {
-      props.updateLikes(post);
+      props.updateLikes(post)
       props.like_notification(post.title, 20)
     } catch (error) {
       props.error(error.response.data.error, 30)
@@ -23,7 +23,7 @@ const Post = (props) => {
 
   const deletePost = () => {
     try {
-      props.deletePost(post);
+      props.deletePost(post)
       props.delete_notification(post.title, 20)
     } catch (error) {
       props.error(error.response.data.error, 30)

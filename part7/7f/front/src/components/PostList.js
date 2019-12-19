@@ -3,7 +3,6 @@ import Post from "./Post"
 import { connect } from "react-redux";
 
 const PostList = props => {
-
   return (
     <ul style={postListStyle} className="postList">
       {props.visiblePosts.map(post => (

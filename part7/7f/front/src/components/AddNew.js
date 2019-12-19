@@ -7,6 +7,7 @@ import { error } from "../reducers/errorReducer"
 
 const AddNew = props => {
   const { title, author, url } = props
+  
   const handleData = async event => {
     event.preventDefault()
     const postObject = {
@@ -15,9 +16,9 @@ const AddNew = props => {
       url: event.target.url.value,
       likes: 0
     }
-    event.target.title.value = " "
-    event.target.author.value = " "
-    event.target.url.value = " "
+    event.target.title.value = ""
+    event.target.author.value = ""
+    event.target.url.value = ""
     const postMatch = await checkExisting(postObject.title)
     postMatch === undefined
       ? addPost(postObject)
@@ -38,7 +39,6 @@ const AddNew = props => {
       await props.createPost(postObject)
       props.newPost_notify(postObject.title, 20)
     } catch (error) {
-      console.log(error.response.data.error)
       props.error(error.response.data.error, 30)
     }
   }

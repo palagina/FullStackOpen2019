@@ -1,95 +1,80 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import Login from "./components/Login"
 import Search from "./components/Search"
 import AddNew from "./components/AddNew"
 import PostList from "./components/PostList"
 import Togglable from "./components/Togglable"
+import Logout from "./components/Logout"
 import Notification from "./components/Notification"
 import postService from "./services/posts"
-import loginService from "./services/login"
-import  { useField } from "./hooks"
+import { useField } from "./hooks"
 import { initializePosts } from "./reducers/postReducer"
+import { logout, setUser } from "./reducers/loginReducer"
 import { connect } from "react-redux"
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
 
 const App = (props) => {
-  const [user, setUser] = useState(null)
-  const username = useField("text")
-  const password = useField("text")
 
   useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      postService.setToken(user.token)
+      props.setUser(user.username)
+    }
     props.initializePosts()
       .catch(error => {
         console.log(error.message)
       })
   }, [])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser")
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      postService.setToken(user.token)
-    }
-  }, [])
-
-  //Login
-  const handleLogin = async event => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({ username: username.value, password: password.value })
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user))
-      postService.setToken(user.token)
-      setUser(user)
-      username.reset()
-      password.reset()
-    } catch (error) {
-      // setMessage(["error", "Wrong credentials"])
-      // setTimeout(() => {
-      //   setMessage([])
-      // }, 5000)
-    }
-  }
-
-  const loggedIn = () => {
+  const LoggedIn = () => {
     return (
       <div>
-        <p>{user.username} logged in</p>
-        <button onClick={userLogout}>Log out</button>
+        <Logout />
         <br></br>
         <br></br>
+        <Notification />
         <Togglable buttonLabel="New Post">
           <AddNew />
         </Togglable>
         <Search />
-        <PostList user={user}/>
+        <PostList user={props.user}/>
       </div>
     )}
 
-  const loginForm = () => {
-    return (
-      <Togglable buttonLabel="Log in">
-        <p>Login: user, Password: password</p>
-        <Login
-          password={password}
-          username = {username}
-          handleLogin={handleLogin}
-        />
-      </Togglable>
-    )
-  }
-
-  const userLogout = () => {
-    setUser(null)
-    window.localStorage.removeItem("loggedBlogAppUser", JSON.stringify(user))
-  }
-
   return (
     <div>
-      <h2>Blog posts</h2>
-      <Notification />
-      {user === null ? loginForm() : loggedIn() }
+      <Router>
+        <div>
+          <div>
+            <Link to="/login">Login</Link>
+            {props.user===null ? (
+              <div>
+                <Redirect to="/login" />
+              </div>
+            ) : (
+              <em>{props.user} logged in</em>
+            )}
+
+          </div>
+          <Route path="/" render={() => <h2>Blog posts</h2>} />
+          <Route exact path="/posts" render={() => <LoggedIn />} />
+          <Route path="/login" render={() =>  <Login />}/>
+        </div>
+      </Router>
     </div>
   )
 }
 
-export default connect(null, { initializePosts })(App)
+const mapStateToProps = (state) => {
+  return {
+    user: state.login,
+  }
+}
+
+const mapDispatchToProps = {
+  initializePosts, logout, setUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
