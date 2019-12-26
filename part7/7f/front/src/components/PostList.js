@@ -1,16 +1,15 @@
 import React from "react"
 import Post from "./Post"
 import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 
 const PostList = props => {
   return (
     <ul style={postListStyle} className="postList">
       {props.visiblePosts.map(post => (
-        <Post
-          key={post.id}
-          post={post}
-          user={props.user}
-        />
+        <li key={post.id}>
+          <Link to={`/posts/${post.id}`}>{post.title}</Link>
+        </li>
       ))}
     </ul>
   )

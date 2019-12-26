@@ -3,14 +3,11 @@ import { connect } from "react-redux"
 import { updateLikes, deletePost } from "../reducers/postReducer"
 import { like_notification, delete_notification  } from "../reducers/notificationReducer"
 import { error } from "../reducers/errorReducer"
+import { withRouter } from "react-router-dom"
 
-const Post = (props) => {
+
+const PostNoHistory = (props) => {
   const { post, user } = props
-  const [visible, setVisible] = useState(false)
-  const showWhenVisible = { display: visible ? "" : "none" }
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
 
   const giveLike = () => {
     try {
@@ -23,34 +20,35 @@ const Post = (props) => {
 
   const deletePost = () => {
     try {
+      props.history.push("/")
       props.deletePost(post)
       props.delete_notification(post.title, 20)
     } catch (error) {
-      props.error(error.response.data.error, 30)
+      console.log(error)
     }
   }
 
+  if (props.post === undefined) {
+    return null
+  }
+
   return (
-    <li style={postStyle} className="postDiv">
-      <div onClick={toggleVisibility}>
-        <p>{post.title} </p>
-        <p>Author: {post.author}</p>
-      </div>
-      <div style={showWhenVisible} className="postInfo">
-        <a href={post.url} rel="noopener noreferrer" target="_blank">
-          Read more
-        </a>
-        <p>
-          Likes: {post.likes}
-          <button value={post.id} onClick={giveLike}>
-            Like
-          </button>
-        </p>
-        <p>Created by: {post.user.username} </p>
-        {user !== null ? <DelButton post={post} deletePost={deletePost}/> : null}
-      </div>
-    </li>
-  )
+    <div>
+      <p>Author: {post.title}</p>
+      <p>Author: {post.author}</p>
+      <a href={post.url} rel="noopener noreferrer" target="_blank">
+        Read more
+      </a>
+      <p>
+        Likes: {post.likes}
+        <button value={post.id} onClick={giveLike}>
+          Like
+        </button>
+      </p>
+      <p>Created by: {post.user.username} </p>
+      {user !== null ? <DelButton post={post} deletePost={deletePost} /> : null}
+    </div>
+  );
 }
 
 const DelButton = (props) => {
@@ -67,6 +65,8 @@ const postStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
+
+const Post = withRouter(PostNoHistory)
 
 const mapDispatchToProps = {
   updateLikes, deletePost, like_notification, delete_notification, error

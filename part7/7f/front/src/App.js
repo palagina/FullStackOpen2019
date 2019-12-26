@@ -6,6 +6,8 @@ import PostList from "./components/PostList"
 import Togglable from "./components/Togglable"
 import Logout from "./components/Logout"
 import Users from "./components/Users"
+import User from "./components/User"
+import Post from "./components/Post"
 import Notification from "./components/Notification"
 import postService from "./services/posts"
 import { initializePosts } from "./reducers/postReducer"
@@ -33,10 +35,6 @@ const App = (props) => {
   const LoggedIn = () => {
     return (
       <div>
-        <div>{props.user} logged in</div>
-        <Logout />
-        <br></br>
-        <br></br>
         <Notification />
         <Togglable buttonLabel="New Post">
           <AddNew />
@@ -46,23 +44,37 @@ const App = (props) => {
       </div>
     )}
 
+  const userById = id => {
+    return props.users.find(user => user.id === id)
+  }
+
+  const postById = id => {
+    return props.posts.find(post => post.id === id)
+  }
+
   return (
     <div>
-      <h2>Blog posts</h2>
       <Router>
         <div>
           <div>
+            <Link to="/">Home</Link>
             <Link to="/users">Users</Link>
             {props.user==="" ? (
               <Redirect to="/login" />
             ) : (
               <Redirect to="/" />
             )}
-
+            <h2>Blog posts</h2>
+            <div>{props.user} logged in</div>
+            <Logout />
+            <br></br>
+            <br></br>
           </div>
           <Route exact path="/" render={() => <LoggedIn/>} />
-          <Route path="/login" render={() =>  <Login />}/>
+          <Route exact path="/login" render={() =>  <Login />}/>
           <Route path="/users" render={() =>  <Users user={props.user}/>}/>
+          <Route path="/users/:id" render={({ match }) => <User user={userById(match.params.id)}/>} />
+          <Route path="/posts/:id" render={({ match }) => <Post post={postById(match.params.id)}/>} />
         </div>
       </Router>
     </div>
@@ -72,6 +84,8 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.login,
+    users: state.users,
+    posts: state.posts,
   }
 }
 

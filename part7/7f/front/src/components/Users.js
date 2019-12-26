@@ -1,14 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
-import Logout from "./Logout"
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 
 const Users = props => {
   return (
     <div>
-      <h2>Blog posts</h2>
-      <div>{props.user} logged in</div>
-      <Logout />
-      <br></br>
       <table>
         <tbody>
           <tr>
@@ -17,17 +13,17 @@ const Users = props => {
           </tr>
           {props.users.map(user => (
             <tr key={user.id}>
-              <td>{user.username}</td>
+              <td><Link to={`/users/${user.id}`}>{user.username}</Link></td>
               <td>{user.posts.length}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     users: state.users,
   }
