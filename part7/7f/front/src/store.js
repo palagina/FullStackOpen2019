@@ -6,6 +6,7 @@ import filterReducer from "./reducers/filterReducer"
 import notificationReducer from "./reducers/notificationReducer"
 import errorReducer from "./reducers/errorReducer"
 import loginReducer from "./reducers/loginReducer"
+import usersReducer from "./reducers/usersReducer"
 
 const reducer = combineReducers({
   posts: postReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   notification: notificationReducer,
   error: errorReducer,
   login: loginReducer,
+  users: usersReducer,
 })
 
 const store = createStore(reducer,

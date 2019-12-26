@@ -5,13 +5,14 @@ import AddNew from "./components/AddNew"
 import PostList from "./components/PostList"
 import Togglable from "./components/Togglable"
 import Logout from "./components/Logout"
+import Users from "./components/Users"
 import Notification from "./components/Notification"
 import postService from "./services/posts"
-import { useField } from "./hooks"
 import { initializePosts } from "./reducers/postReducer"
+import { getUsers } from "./reducers/usersReducer"
 import { logout, setUser } from "./reducers/loginReducer"
 import { connect } from "react-redux"
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 
 const App = (props) => {
 
@@ -22,6 +23,7 @@ const App = (props) => {
       postService.setToken(user.token)
       props.setUser(user.username)
     }
+    props.getUsers()
     props.initializePosts()
       .catch(error => {
         console.log(error.message)
@@ -50,8 +52,8 @@ const App = (props) => {
       <Router>
         <div>
           <div>
-            <Link to="/login">Login</Link>
-            {props.user===null ? (
+            <Link to="/users">Users</Link>
+            {props.user==="" ? (
               <Redirect to="/login" />
             ) : (
               <Redirect to="/" />
@@ -60,6 +62,7 @@ const App = (props) => {
           </div>
           <Route exact path="/" render={() => <LoggedIn/>} />
           <Route path="/login" render={() =>  <Login />}/>
+          <Route path="/users" render={() =>  <Users user={props.user}/>}/>
         </div>
       </Router>
     </div>
@@ -73,7 +76,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  initializePosts, logout, setUser
+  initializePosts, logout, setUser, getUsers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
