@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from "redux"
 import { composeWithDevTools } from "redux-devtools-extension"
 import thunk from "redux-thunk"
 import postReducer from "./reducers/postReducer"
+import commentsReducer from "./reducers/commentsReducer"
 import filterReducer from "./reducers/filterReducer"
 import notificationReducer from "./reducers/notificationReducer"
 import errorReducer from "./reducers/errorReducer"
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   error: errorReducer,
   login: loginReducer,
   users: usersReducer,
+  comments: commentsReducer
 })
 
 const store = createStore(reducer,

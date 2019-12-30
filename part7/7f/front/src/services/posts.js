@@ -47,4 +47,5 @@ const remove = async post => {
   return response.data
 }
 
+
 export default { getAll, create, updateLikes, updatePost, remove, setToken }

@@ -5,7 +5,7 @@ import { filterChange } from "../reducers/filterReducer";
 const Search = props => {
   const handleChange = event => {
     props.filterChange(event.target.value);
-  };
+  }
 
   return (
     <div>

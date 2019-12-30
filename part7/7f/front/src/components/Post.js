@@ -1,10 +1,10 @@
-import React, { useState } from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { updateLikes, deletePost } from "../reducers/postReducer"
 import { like_notification, delete_notification  } from "../reducers/notificationReducer"
 import { error } from "../reducers/errorReducer"
 import { withRouter } from "react-router-dom"
-
+import Comments from "./Comments"
 
 const PostNoHistory = (props) => {
   const { post, user } = props
@@ -34,7 +34,7 @@ const PostNoHistory = (props) => {
 
   return (
     <div>
-      <p>Author: {post.title}</p>
+      <h3>Author: {post.title}</h3>
       <p>Author: {post.author}</p>
       <a href={post.url} rel="noopener noreferrer" target="_blank">
         Read more
@@ -47,8 +47,10 @@ const PostNoHistory = (props) => {
       </p>
       <p>Created by: {post.user.username} </p>
       {user !== null ? <DelButton post={post} deletePost={deletePost} /> : null}
+      <br></br>
+      <Comments postId={post.id}/>
     </div>
-  );
+  )
 }
 
 const DelButton = (props) => {
@@ -69,7 +71,7 @@ const postStyle = {
 const Post = withRouter(PostNoHistory)
 
 const mapDispatchToProps = {
-  updateLikes, deletePost, like_notification, delete_notification, error
+  updateLikes, deletePost, like_notification, delete_notification, error,
 }
 
 export default connect(

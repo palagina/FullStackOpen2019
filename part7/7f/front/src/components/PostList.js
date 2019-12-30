@@ -1,7 +1,6 @@
 import React from "react"
-import Post from "./Post"
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 
 const PostList = props => {
   return (

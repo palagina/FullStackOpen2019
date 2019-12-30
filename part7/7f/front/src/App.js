@@ -4,13 +4,14 @@ import Search from "./components/Search"
 import AddNew from "./components/AddNew"
 import PostList from "./components/PostList"
 import Togglable from "./components/Togglable"
-import Logout from "./components/Logout"
+import NavBar from "./components/NavBar"
 import Users from "./components/Users"
 import User from "./components/User"
 import Post from "./components/Post"
 import Notification from "./components/Notification"
 import postService from "./services/posts"
 import { initializePosts } from "./reducers/postReducer"
+import { initComments } from "./reducers/commentsReducer"
 import { getUsers } from "./reducers/usersReducer"
 import { logout, setUser } from "./reducers/loginReducer"
 import { connect } from "react-redux"
@@ -27,6 +28,7 @@ const App = (props) => {
     }
     props.getUsers()
     props.initializePosts()
+    props.initComments()
       .catch(error => {
         console.log(error.message)
       })
@@ -57,24 +59,22 @@ const App = (props) => {
       <Router>
         <div>
           <div>
-            <Link to="/">Home</Link>
-            <Link to="/users">Users</Link>
-            {props.user==="" ? (
-              <Redirect to="/login" />
-            ) : (
-              <Redirect to="/" />
-            )}
+            <NavBar user={props.user}/>
+            {props.user === "" ? <Redirect to="/login" /> : <Redirect to="/" />}
             <h2>Blog posts</h2>
-            <div>{props.user} logged in</div>
-            <Logout />
-            <br></br>
             <br></br>
           </div>
-          <Route exact path="/" render={() => <LoggedIn/>} />
-          <Route exact path="/login" render={() =>  <Login />}/>
-          <Route path="/users" render={() =>  <Users user={props.user}/>}/>
-          <Route path="/users/:id" render={({ match }) => <User user={userById(match.params.id)}/>} />
-          <Route path="/posts/:id" render={({ match }) => <Post post={postById(match.params.id)}/>} />
+          <Route exact path="/" render={() => <LoggedIn />} />
+          <Route exact path="/login" render={() => <Login />} />
+          <Route path="/users" render={() => <Users user={props.user} />} />
+          <Route
+            path="/users/:id"
+            render={({ match }) => <User user={userById(match.params.id)} />}
+          />
+          <Route
+            exact path="/posts/:id"
+            render={({ match }) => <Post post={postById(match.params.id)} />}
+          />
         </div>
       </Router>
     </div>
@@ -90,7 +90,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  initializePosts, logout, setUser, getUsers
+  initializePosts, logout, setUser, getUsers, initComments
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
