@@ -4,12 +4,14 @@ import { createPost, updatePost } from "../reducers/postReducer"
 import postService from "../services/posts"
 import { newPost_notify, updatePost_notify } from "../reducers/notificationReducer"
 import { error } from "../reducers/errorReducer"
+import { Form, Button, Header, Container, Input } from "semantic-ui-react"
 
 const AddNew = props => {
   const { title, author, url } = props
-  
+
   const handleData = async event => {
     event.preventDefault()
+    console.log(event.target)
     const postObject = {
       title: event.target.title.value,
       author: event.target.author.value,
@@ -37,9 +39,9 @@ const AddNew = props => {
   const addPost = async postObject => {
     try {
       await props.createPost(postObject)
-      props.newPost_notify(postObject.title, 20)
+      props.newPost_notify(postObject.title, 50)
     } catch (error) {
-      props.error(error.response.data.error, 30)
+      props.error(error.response.data.error, 50)
     }
   }
 
@@ -51,31 +53,29 @@ const AddNew = props => {
     ) {
       try {
         await props.updatePost(postMatch.id, postObject)
-        props.updatePost_notify(postObject.title, 30)
+        props.updatePost_notify(postObject.title, 50)
       } catch (error) {
-        props.error(error.response.data.error, 30)
+        props.error(error.response.data.error, 50)
       }
     }
   }
 
   return (
-    <div>
-      <h3>Create new post</h3>
-      <form onSubmit={handleData} id="addForm">
-        <div>
-          Title: <input name="title" {...title} />
-        </div>
-        <div>
-          Author: <input name="author" {...author} />
-        </div>
-        <div>
-          URL: <input name="url" {...url} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-    </div>
+    <Container>
+      <Header size="medium">Create new post</Header>
+      <Form onSubmit={handleData} id="addForm">
+        <Form.Field>
+          <Input name="title" placeholder='Enter title' {...title} />
+        </Form.Field>
+        <Form.Field>
+          <Input name="author" placeholder='Enter author' {...author} />
+        </Form.Field>
+        <Form.Field>
+          <Input name="url" placeholder='Enter URL' {...url} />
+        </Form.Field>
+        <Button type="submit" color="violet">Add</Button>
+      </Form>
+    </Container>
   )
 }
 

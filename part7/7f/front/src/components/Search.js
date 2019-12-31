@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { filterChange } from "../reducers/filterReducer";
+import { Input } from 'semantic-ui-react'
 
 const Search = props => {
   const handleChange = event => {
@@ -8,13 +9,13 @@ const Search = props => {
   }
 
   return (
-    <div>
-      <form>
-        <input placeholder="Search.." onChange={handleChange} />
-      </form>
-    </div>
-  );
-};
+    <Input
+      style={{ paddingTop: "20px" }}
+      placeholder='Search'
+      onChange={handleChange}
+      value={props.filter}/>
+  )
+}
 
 const mapStateToProps = (state) => {
   return {

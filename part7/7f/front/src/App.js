@@ -1,9 +1,6 @@
 import React, { useEffect } from "react"
 import Login from "./components/Login"
-import Search from "./components/Search"
-import AddNew from "./components/AddNew"
 import PostList from "./components/PostList"
-import Togglable from "./components/Togglable"
 import NavBar from "./components/NavBar"
 import Users from "./components/Users"
 import User from "./components/User"
@@ -15,10 +12,10 @@ import { initComments } from "./reducers/commentsReducer"
 import { getUsers } from "./reducers/usersReducer"
 import { logout, setUser } from "./reducers/loginReducer"
 import { connect } from "react-redux"
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
+import { Container, Header } from "semantic-ui-react"
 
-const App = (props) => {
-
+const App = props => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser")
     if (loggedUserJSON) {
@@ -28,57 +25,76 @@ const App = (props) => {
     }
     props.getUsers()
     props.initializePosts()
-    props.initComments()
-      .catch(error => {
-        console.log(error.message)
-      })
+    props.initComments().catch(error => {
+      console.log(error.message)
+    })
   }, [])
 
   const LoggedIn = () => {
     return (
       <div>
+        <NavBar user={props.user} />
         <Notification />
-        <Togglable buttonLabel="New Post">
-          <AddNew />
-        </Togglable>
-        <Search />
-        <PostList user={props.user}/>
       </div>
-    )}
+    )
+  }
 
   const userById = id => {
-    return props.users.find(user => user.id === id)
+    return props.users.find(user => user.id === id);
   }
 
   const postById = id => {
-    return props.posts.find(post => post.id === id)
+    return props.posts.find(post => post.id === id);
   }
 
   return (
-    <div>
+    <Container>
       <Router>
-        <div>
-          <div>
-            <NavBar user={props.user}/>
+        <Container>
+          <Container>
             {props.user === "" ? <Redirect to="/login" /> : <Redirect to="/" />}
-            <h2>Blog posts</h2>
-            <br></br>
-          </div>
-          <Route exact path="/" render={() => <LoggedIn />} />
+            <Header size="large" style={{ paddingTop: "30px" }}>
+              Blog posts
+            </Header>
+          </Container>
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Container>
+                <LoggedIn />
+                <PostList user={props.user} />
+              </Container>
+            )}
+          />
           <Route exact path="/login" render={() => <Login />} />
-          <Route path="/users" render={() => <Users user={props.user} />} />
+          <Route
+            path="/users"
+            render={() => (
+              <Container>
+                <LoggedIn />
+                <Users user={props.user} />
+              </Container>
+            )}
+          />
           <Route
             path="/users/:id"
             render={({ match }) => <User user={userById(match.params.id)} />}
           />
           <Route
-            exact path="/posts/:id"
-            render={({ match }) => <Post post={postById(match.params.id)} />}
+            exact
+            path="/posts/:id"
+            render={({ match }) => (
+              <Container>
+                <LoggedIn />
+                <Post post={postById(match.params.id)} />
+              </Container>
+            )}
           />
-        </div>
+        </Container>
       </Router>
-    </div>
-  )
+    </Container>
+  );
 }
 
 const mapStateToProps = (state) => {

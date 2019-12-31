@@ -6,6 +6,7 @@ import loginService from "../services/login"
 import { useField } from "../hooks"
 import { withRouter } from "react-router-dom"
 import Notification from "./Notification"
+import { Form, Button, Container, Input } from 'semantic-ui-react'
 
 let LoginNoHistory = props => {
 
@@ -25,22 +26,19 @@ let LoginNoHistory = props => {
   const password = useField("text")
 
   return (
-    <div>
-      <p>Login: user, Password: password</p>
+    <Container>
+      <Container>Login: user, Password: password</Container>
       <Notification />
-      <br></br>
-      <form onSubmit={onSubmit} className="loginForm">
-        <div>
-          username:
-          <input {...username} />
-        </div>
-        <div>
-          password:
-          <input {...password} />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      <Form onSubmit={onSubmit}>
+        <Form.Field>
+          <Input focus placeholder='Enter username' {...username} />
+        </Form.Field>
+        <Form.Field>
+          <Input focus placeholder='Enter password' {...password} />
+        </Form.Field>
+        <Button type='submit' color="violet">Login</Button>
+      </Form>
+    </Container>
   )
 }
 

@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { logout, setUser } from "../reducers/loginReducer"
 import { withRouter } from "react-router-dom"
+import { Button } from 'semantic-ui-react'
 
 const LogoutNoHistory = props => {
 
@@ -18,7 +19,7 @@ const LogoutNoHistory = props => {
   }
 
   return (
-    <button onClick={userLogout}>Log out</button>
+    <Button onClick={userLogout} color="violet">Log out</Button>
   )
 }
 

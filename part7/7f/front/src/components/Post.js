@@ -5,6 +5,7 @@ import { like_notification, delete_notification  } from "../reducers/notificatio
 import { error } from "../reducers/errorReducer"
 import { withRouter } from "react-router-dom"
 import Comments from "./Comments"
+import { Header, Container, Icon, Button, Label } from "semantic-ui-react"
 
 const PostNoHistory = (props) => {
   const { post, user } = props
@@ -33,39 +34,39 @@ const PostNoHistory = (props) => {
   }
 
   return (
-    <div>
-      <h3>Author: {post.title}</h3>
-      <p>Author: {post.author}</p>
+    <Container>
+      <Header size="large">Author: {post.title}</Header>
+      <Container>Author: {post.author}</Container>
       <a href={post.url} rel="noopener noreferrer" target="_blank">
+        {" "}
         Read more
       </a>
-      <p>
-        Likes: {post.likes}
-        <button value={post.id} onClick={giveLike}>
+      <Container>Created by: {post.user.username} </Container>
+      <Button as="div" labelPosition="right" style={{ marginTop: "20px" }}>
+        <Button color="violet" onClick={giveLike}>
+          <Icon name="heart" />
           Like
-        </button>
-      </p>
-      <p>Created by: {post.user.username} </p>
-      {user !== null ? <DelButton post={post} deletePost={deletePost} /> : null}
-      <br></br>
-      <Comments postId={post.id}/>
-    </div>
+        </Button>
+        <Label as="a" basic color="violet" pointing="left">
+          {post.likes}
+        </Label>
+      </Button>
+      <Container>
+        {user !== null ? (
+          <DelButton post={post} deletePost={deletePost} />
+        ) : null}
+      </Container>
+      <Comments postId={post.id} />
+    </Container>
   )
 }
 
 const DelButton = (props) => {
   return (
-    <button value={props.post.id} onClick={props.deletePost}>
-      remove
-    </button>
+    <Button style={{ marginTop: "10px" }} value={props.post.id} onClick={props.deletePost} color="red">
+      Remove
+    </Button>
   )
-}
-
-const postStyle = {
-  padding: 5,
-  border: "solid",
-  borderWidth: 1,
-  marginBottom: 5
 }
 
 const Post = withRouter(PostNoHistory)

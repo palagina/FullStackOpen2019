@@ -1,23 +1,32 @@
 import React from "react"
-import { connect } from "react-redux";
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { connect } from "react-redux"
+import { BrowserRouter as Router, Link } from "react-router-dom"
+import { Table, Container } from "semantic-ui-react"
+import AddNew from "./AddNew"
+import Togglable from "./Togglable"
+import Search from "./Search"
 
 const PostList = props => {
   return (
-    <ul style={postListStyle} className="postList">
-      {props.visiblePosts.map(post => (
-        <li key={post.id}>
-          <Link to={`/posts/${post.id}`}>{post.title}</Link>
-        </li>
-      ))}
-    </ul>
+    <Container>
+      <Togglable buttonLabel="New Post">
+        <AddNew />
+      </Togglable>
+      <Search />
+      <Table striped celled>
+        <Table.Body>
+          {props.visiblePosts.map(post => (
+            <Table.Row key={post.id}>
+              <Table.Cell>
+                <Link to={`/posts/${post.id}`}>{post.title}</Link>
+              </Table.Cell>
+              <Table.Cell>{post.user.username}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Container>
   )
-}
-
-const postListStyle = {
-  color: "grey",
-  paddingTop: "5px",
-  fontSize: "15px",
 }
 
 const postsToShow = ({ posts, filter }) => {

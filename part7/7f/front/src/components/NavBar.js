@@ -1,21 +1,33 @@
 import React from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import Logout from "./Logout"
+import { Menu } from "semantic-ui-react"
 
 const NavBar = props => {
   return (
-    <div style={style}>
-      <Link to="/">Home</Link>
-      <Link to="/users">Users</Link>
-      <p>{props.user} logged in </p>
-      <Logout />
+    <div>
+      <Menu inverted color="green">
+        <Menu.Item link>
+          <Link to="/">Home</Link>
+        </Menu.Item>
+        <Menu.Item link>
+          <Link to="/users">Users</Link>
+        </Menu.Item>
+        <Menu.Menu position="right">
+          <Menu.Item link>
+            {props.user ? (
+              <em>
+                {props.user} logged in <Logout />
+              </em>
+            ) : (
+              <Link to="/login">login</Link>
+            )}
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
     </div>
   )
 }
-
-const style = {
-    display: "inline"
-  }
 
 export default connect(null, null)(NavBar)

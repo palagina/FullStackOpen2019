@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { addComment } from "../reducers/commentsReducer"
+import { Form, Button, Container, Input, Header, List } from 'semantic-ui-react'
 
 const Comments = (props) => {
   const { comments, postId } = props
@@ -20,29 +21,26 @@ const Comments = (props) => {
   }
 
   return (
-    <div>
-      <h3>Comments</h3>
-      <ul>
+    <Container style={{ paddingTop: "30px" }}>
+      <Header>Comments</Header>
+      <List>
         {props.comments
-          .filter(comment => postId===comment.postId)
+          .filter(comment => postId === comment.postId)
           .map(comment => (
-            <li key={comment.id}>
-              {comment.text}
-            </li>
+            <List.Item key={comment.id}>{comment.text}</List.Item>
           ))}
-      </ul>
+      </List>
 
-      <form onSubmit={addComment} id="commentForm">
-        <div>
-          Write your comment:
-          <input name="comment" {...comments.text} />
-        </div>
-        <div>
-          <button type="submit">Add comment</button>
-        </div>
-      </form>
-    </div>
-  )
+      <Form onSubmit={addComment}>
+        <Container>
+          <Input name="comment" placeholder="Write your comment:" {...comments.text} />
+        </Container>
+        <Container style={{ marginTop: "10px" }}>
+          <Button type="submit" color="violet">Add comment</Button>
+        </Container>
+      </Form>
+    </Container>
+  );
 }
 
 const mapStateToProps = state => {

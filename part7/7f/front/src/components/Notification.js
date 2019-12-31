@@ -1,20 +1,23 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Container, Message } from "semantic-ui-react"
 
 const Notification = (props) => {
 
-  const style = {
-    border: "solid",
-    padding: 10,
-    borderWidth: 1,
-    width: "300px"
-  }
+  const { notification, error } = props
 
-  if (props.error !== "") {
-    return <div style={style}>{props.error}</div>
+  if (error !== "") {
+    return (
+      <Container>
+        {(error && <Message error> {error} </Message>)}
+      </Container>
+    )
   } else {
-    return <div style={style}>{props.notification}</div>
-  }
+    return (
+      <Container style={{ paddingTop: "20px" }}>
+        {(notification && <Message success> {notification} </Message>)}
+      </Container>
+    )}
 }
 
 const mapStateToProps = (state) => {
