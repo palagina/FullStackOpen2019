@@ -1,1 +1,1 @@
-Next 7.13
+Exercises of part 7 till 7.16

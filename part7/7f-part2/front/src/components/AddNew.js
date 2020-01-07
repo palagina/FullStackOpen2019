@@ -68,7 +68,7 @@ const AddNew = props => {
           <Input name="title" placeholder='Enter title' {...title} />
         </Form.Field>
         <Form.Field>
-          <Input name="author" placeholder='Enter author' {...author} />
+          <Input className="author" placeholder='Enter author' {...author} />
         </Form.Field>
         <Form.Field>
           <Input name="url" placeholder='Enter URL' {...url} />

@@ -25,8 +25,15 @@ app.use(cors())
 app.use(express.static("build"))
 app.use(bodyParser.json())
 app.use(requestLogger)
-
 app.use(tokenExtractor)
+
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === "test") {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+  console.log("testing");
+}
+
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
 app.use("/api/posts", postsRouter)

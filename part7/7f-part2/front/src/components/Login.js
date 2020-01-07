@@ -30,16 +30,20 @@ let LoginNoHistory = props => {
       <Container>Login: user, Password: password</Container>
       <Notification />
       <Form onSubmit={onSubmit}>
-        <Form.Field>
-          <Input focus placeholder='Enter username' {...username} />
+        <Form.Field id="password">
+          <Input id="password" focus placeholder="Enter username" {...username} />
         </Form.Field>
-        <Form.Field>
-          <Input focus placeholder='Enter password' {...password} />
+        <Form.Field id="password">
+          <Input focus placeholder="Enter password" {...password} />
         </Form.Field>
-        <Button type='submit' color="violet">Login</Button>
+        <Form.Field id="login_button">
+          <Button type="submit" color="violet">
+            Login
+          </Button>
+        </Form.Field>
       </Form>
     </Container>
-  )
+  );
 }
 
 const Login = withRouter(LoginNoHistory)
