@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import YearForm from './YearForm'
 
 const Authors = (props) => {
   if (!props.show) {
@@ -8,6 +9,7 @@ const Authors = (props) => {
     return <div>loading...</div>
   }
   const authors = props.result.data.allAuthors 
+  const editYear = props.editYear
 
   return (
     <div>
@@ -32,6 +34,8 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
+      <br></br>
+      <YearForm editYear={editYear} authors={authors} />
 
     </div>
   )

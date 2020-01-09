@@ -26,6 +26,7 @@ const ALL_BOOKS = gql`
     }
   }`
 
+
 const CREATE_BOOK = gql`
   mutation createBook(
     $title: String!
@@ -63,26 +64,43 @@ const LOGIN = gql`
   }
 `
 
+export const USER_INFO = gql`
+{
+  me {
+    username
+    favoriteGenre
+  }
+}
+`
+
 const App = () => {
 
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
-  // const [token, setToken] = useState(null)
+  const [token, setToken] = useState(null)
 
   const client = useApolloClient()
-  
+
   const authors = useQuery(ALL_AUTHORS, {
-    fetchPolicy: "network-only",
+    fetchPolicy: 'no-cache'
   })
   const books = useQuery(ALL_BOOKS, {
-    fetchPolicy: "network-only"
+    fetchPolicy: 'no-cache'
   })
 
-  // const logout = () => {
-  //   setToken(null)
-  //   localStorage.clear()
-  //   client.resetStore()
-  // }
+  //  const userInfo = useQuery(USER_INFO, {
+  //    pollInterval: 1000
+  //  })
+  const userInfo = {
+    username: "user",
+    favoriteGenre: "design"
+  }
+
+   const logout = () => {
+     setToken(null)
+     localStorage.clear()
+     client.resetStore()
+   }
 
   const handleError = (error) => {
     setErrorMessage(error.graphQLErrors[0].message)
@@ -95,7 +113,7 @@ const App = () => {
     onError: handleError,
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_BOOKS })
-      dataInStore.allBooks.push(response.data.addBook)
+      dataInStore.books.push(response.data.addBook)
       store.writeQuery({
         query: ALL_BOOKS,
         data: dataInStore
@@ -104,47 +122,49 @@ const App = () => {
   })
 
   const [editYear] = useMutation(EDIT_YEAR)
-
   // const [login] = useMutation(LOGIN, {
   //   onError: handleError
   // })
+
+  const login = () => {
+    setToken("newToken")
+  }
 
   const errorNotification = () => errorMessage &&
     <div style={{ color: 'red' }}>
       {errorMessage}
     </div>
 
-  // if (!token) {
-  //   return (
-  //     <div>
-  //       {errorNotification()}
-  //       <h2>Login</h2>
-  //       <LoginForm
-  //         login={login}
-  //         setToken={(token) => setToken(token)}
-  //       />
-  //     </div>
-  //   )
-  // }
-  
-  // <button onClick={logout}>Logout</button>
+   if (!token) {
+     return (
+       <div>
+         {errorNotification()}
+         <h2>Login</h2>
+         <LoginForm
+           login={login}
+           setToken={(token) => setToken(token)}
+         />
+       </div>
+     )
+   }
 
   return (
     <div>
       <div>
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
+        <button onClick={() => setPage("recommendation")}>recommendations</button>
         <button onClick={() => setPage("add")}>add book</button>
-      
+        <button onClick={logout}>logout</button>
       </div>
 
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
 
-      <Authors result={authors} show={page === "authors"} />
-      <Books result={books} show={page === "books"} />
+      <Authors result={authors} show={page === "authors"}/>
+      <Books  show={page === "books"} result={books} />
+      <Books show={page === 'recommendation'} result={books} userInfo={userInfo}/>
       <NewBook addBook={addBook} show={page === "add"} />
-      <YearForm editYear={editYear} authors={authors} />
-     
+
     </div>
   );
 }

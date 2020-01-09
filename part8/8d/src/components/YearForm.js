@@ -9,13 +9,12 @@ const YearForm = (props) => {
     if (props.authors.loading) {
       return <div>loading...</div>;
     }
-    const authors = props.authors.data.allAuthors;
-    console.log(authors);
-    let options = [];
-    options = authors.map(author => {
-      return { value: author.name, label: author.name };
-    });
-  
+    const authors = props.authors
+
+    let options = []
+    options = authors.map((author) => {
+      return { value: author.name, label: author.name }
+    })
     const select = async (selectedOption) => {
       setSelectedOption( selectedOption )
       setName(selectedOption.value)
@@ -41,7 +40,7 @@ const YearForm = (props) => {
               options={options}
             />
           </div>
-          
+
           <div>
             year{" "}
             <input
