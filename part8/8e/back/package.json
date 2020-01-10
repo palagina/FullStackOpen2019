@@ -1,0 +1,19 @@
+{
+  "name": "graphql_practice",
+  "version": "1.0.0",
+  "description": "GraphQL practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mariia Palagina",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.15",
+    "graphql": "^14.5.8",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.0.0",
+    "mongoose": "^5.4.20",
+    "mongoose-unique-validator": "^2.0.3"
+  }
+}
